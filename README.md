@@ -1,9 +1,11 @@
-# PyAtmo
-Python Netatmo scripts
+# PyAtmo (based on mr3188/PyAtmo project)
+Python Netatmo scripts for write_camera
+
+Not yet tested version, created for get access to API
 
 <b>Clone repo</b>
 ```
-git clone https://github.com/mr3188/PyAtmo
+git clone https://github.com/pipacsba/PyAtmo
 ```
 
 <b>Create config file and edit</b>
@@ -11,23 +13,9 @@ git clone https://github.com/mr3188/PyAtmo
 cp PyAtmo_sample.conf PyAtmo.conf
 cat PyAtmo.conf
 
-[home]
-# default home name
-name = homeName
-
-# Security configuration to access server data
-[security]
-username = <netatmo username>
-password = <password>
-client_id = <24 length alphanumeric vallue>
-client_secret = <34 length alphanumeric value>
-scope = read_station read_thermostat write_thermostat
-
-[mqtt]
-server = <mqtt server hostname>
 ```
 
 <b>Run test Python script</b>
 ```
-python3 testPyAtmo.py
+python3 writeCamera.py <arm/disarm>
 ```
