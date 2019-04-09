@@ -4,9 +4,7 @@ import requests
 
 
 class Netatmo:
-    commands = {"Gethomedata",
-                "Setpersonsaway",
-                "Setpersonshome"}
+    commands = {"Gethomedata", "Setpersonsaway", "Setpersonshome"}
 
     baseUrl = "https://api.netatmo.com/api/"
 
@@ -62,38 +60,53 @@ class Netatmo:
             access_token = response.json()["access_token"]
             refresh_token = response.json()["refresh_token"]
             self.accessToken = access_token
+            # print('Token:' + access_token)
             self.refreshToken = refresh_token
 
             self.config.add_section('token')
             self.config.set('token', 'scope', scope)
+            return "OK"
 
         except requests.exceptions.HTTPError as error:
-            print('Request Exception:')
-            print(payload)
+            #print('Request Exception:')
+            #print(payload)
+            return "NOK"
 
     def post(self, command, headers=None, data=None):
         # headers = {'Authorization': 'Bearer ' + self.config["security"]["access_token"]}
         headers = {'Authorization': 'Bearer ' + self.accessToken }
 
         try:
-            response = requests.post(Netatmo.baseUrl+command, headers=headers, data=data)
+            response = requests.post(Netatmo.baseUrl+command, headers=headers, params=data)
             response.raise_for_status()
+            # print(response.url)
             return response
         except requests.exceptions.HTTPError as error:
-            print(error.response.status_code, error.response.text)
-            raise
+            return "NOK"
+            # print(response.url)
+            # print(error.response.status_code, error.response.text)
+            # raise
 
     # access_token=[YOUR_TOKEN]&home_id=[YOUR_HOME_ID]&size=5
     def getHomesData(self, homeName=None, homeId=None, size=None):
-        response = self.post("gethomedata", data='size=' + str(size))
+        response = self.post("gethomedata", data={'size': str(size)})
         return response.json()
     
     #access_token=[ACCESS_TOKEN]&home_id=[HOME_ID]&person_id=[PERSONS_ID_ARRAY]
     def Setpersonsaway(self, homeId=None, person_id=None):
-        response = self.post("setpersonsaway", data='home_id=' + homeId + "&person_id=" + person_id)
-        return response.json()
+        if len(person_id) > 1:
+            response = self.post("setpersonsaway", data={'home_id' : homeId, 'person_id' : person_id})
+        else:
+            response = self.post("setpersonsaway", data={'home_id' : homeId })
+        if response != "NOK":
+            return response.json()
+        else:
+            return "NOK"
     
-    #access_token=[ACCESS_TOKEN]&home_id=[HOME_ID]&person_id=[PERSONS_ID_ARRAY]
-    def Setpersonshome(self, homeId=None, person_id=None):
-        response = self.post("setpersonshome", data='home_id=' + homeId + "&person_id=" + person_id)
-        return response.json()
+    #access_token=[ACCESS_TOKEN]&home_id=[HOME_ID]&person_ids[]=[PERSONS_ID_ARRAY]
+    def Setpersonshome(self, homeId=None, person_ids=None):
+        response = self.post("setpersonshome", data={'home_id' : homeId, 'person_ids[]' :  [person_ids]})
+        if response != "NOK":
+            return response.json()
+        else:
+            return "NOK"
