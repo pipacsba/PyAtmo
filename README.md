@@ -1,8 +1,6 @@
 # PyAtmo (based on mr3188/PyAtmo project)
 Python Netatmo scripts for write_camera
 
-Not yet tested version, created for get access to API
-
 <b>Clone repo</b>
 ```
 git clone https://github.com/pipacsba/PyAtmo
@@ -19,3 +17,5 @@ cat PyAtmo.conf
 ```
 python3 writeCamera.py <arm/disarm>
 ```
+
+For your own application ID and camera the application does not need to have write_camera as available scope
