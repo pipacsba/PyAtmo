@@ -42,10 +42,14 @@ def main():
                     status = netatmo.Setpersonshome(homeId=home_id, person_ids=person_id)
                     if status != "NOK":
                         person_away = "False"
+                    else:
+                        person_away = "Unknown"
                 elif argv[1] == "arm":
                     status = netatmo.Setpersonsaway(homeId=home_id, person_id= "")
                     if status != "NOK":
                         person_away = "True"
+                    else:
+                        person_away = "Unknown"
         else:
             person_away = "Unknown"
     else:
