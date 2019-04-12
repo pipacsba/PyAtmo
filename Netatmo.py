@@ -4,7 +4,7 @@ import requests
 
 
 class Netatmo:
-    commands = {"Gethomedata", "Setpersonsaway", "Setpersonshome"}
+    commands = {"Gethomedata", "Setpersonsaway", "Setpersonshome", "getHomeStatus"}
 
     baseUrl = "https://api.netatmo.com/api/"
 
@@ -110,3 +110,11 @@ class Netatmo:
             return response.json()
         else:
             return "NOK"
+
+    # https://dev.netatmo.com/resources/technical/reference/energy/homestatus
+    # GET /api.netatmo.com/api/homestatus?home_id=[HOME_ID] 
+    def getHomeStatus(self, homeName=None, homeId=None):
+        params={}
+        params["home_id"]=homeId
+        response=self.post("homestatus", data=params)
+        return response.json()
