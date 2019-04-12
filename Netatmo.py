@@ -4,7 +4,7 @@ import requests
 
 
 class Netatmo:
-    commands = {"Gethomedata", "Setpersonsaway", "Setpersonshome", "getHomeStatus"}
+    commands = {"Gethomedata", "Setpersonsaway", "Setpersonshome", "getHomeStatus", "Getstationsdata"}
 
     baseUrl = "https://api.netatmo.com/api/"
 
@@ -77,7 +77,10 @@ class Netatmo:
         headers = {'Authorization': 'Bearer ' + self.accessToken }
 
         try:
-            response = requests.post(Netatmo.baseUrl+command, headers=headers, params=data)
+            if data==None:
+                response = requests.post(Netatmo.baseUrl+command, headers=headers)
+            else:
+                response = requests.post(Netatmo.baseUrl+command, headers=headers, params=data)
             response.raise_for_status()
             # print(response.url)
             return response
@@ -117,4 +120,15 @@ class Netatmo:
         params={}
         params["home_id"]=homeId
         response=self.post("homestatus", data=params)
-        return response.json()
+        if response != "NOK":
+            return response.json()
+        else:
+            return "NOK"
+
+    #GET /api/getstationsdata?access_token=[YOUR_TOKEN]&device_id=[DEVICE_ID]
+    def Getstationsdata(self):
+        response=self.post("getstationsdata")
+        if response != "NOK":
+            return response.json()
+        else:
+            return "NOK"

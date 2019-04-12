@@ -75,6 +75,35 @@ def main():
                                     NACamera_wifi_strength = amodule["wifi_strength"]
                                 NACamera_sd_status = amodule["sd_status"]
                                 NACamera_alim_status = amodule["alim_status"]
+                elif argv[1] == "stationdata":
+                    person_away = "N/A"
+                    Indoor_wifi_status = ""
+                    Indoor_temperature = ""
+                    Indoor_pressure = ""
+                    Indoor_humidity = ""
+                    Indoor_co2 = ""
+                    Indoor_noise = ""
+                    Outdoor_temperature = ""
+                    Outdoor_humidity = ""
+                    Outdoor_battery_percent = ""
+                    Outdoor_rf_status = ""
+                    status = netatmo.Getstationsdata()
+                    # print(status)
+                    if status != "NOK":
+                        device = status["body"]["devices"][0]
+                        module = status["body"]["devices"][0]["modules"][0]
+                        # Indoor: temperature, pressure, co2, noise, humidity, wifi_status
+                        # Outdoor: temperature, humidity, battery_percent, rf_status
+                        Indoor_wifi_status = device["wifi_status"]
+                        Indoor_temperature = device["dashboard_data"]["Temperature"]
+                        Indoor_pressure = device["dashboard_data"]["Pressure"]
+                        Indoor_humidity = device["dashboard_data"]["Humidity"]
+                        Indoor_co2 = device["dashboard_data"]["CO2"]
+                        Indoor_noise =  device["dashboard_data"]["Noise"]
+                        Outdoor_temperature = module["dashboard_data"]["Temperature"]
+                        Outdoor_humidity = module["dashboard_data"]["Humidity"]
+                        Outdoor_battery_percent = module["battery_percent"]
+                        Outdoor_rf_status = module["rf_status"]
         else:
             person_away = "Unknown"
     else:
@@ -83,14 +112,28 @@ def main():
     if person_away != "N/A":
         status = json.dumps({'person_away': person_away}, sort_keys=True, indent=4)
     else:
-        status = json.dumps({'NAPlug_rf_strength': NAPlug_rf_strength,
-                             'NAPlug_wifi_strength': NAPlug_wifi_strength,
-                             'NATherm1_battery_state': NATherm1_battery_state,
-                             'NATherm1_rf_strength': NATherm1_rf_strength,
-                             'NACamera_wifi_strength': NACamera_wifi_strength,
-                             'NACamera_sd_status': NACamera_sd_status,
-                             'NACamera_alim_status': NACamera_alim_status,
-                             'HomeID': home_id}, sort_keys=True, indent=4)
+        if argv[1] == "sysstat":
+            status = json.dumps({'NAPlug_rf_strength': NAPlug_rf_strength,
+                                 'NAPlug_wifi_strength': NAPlug_wifi_strength,
+                                 'NATherm1_battery_state': NATherm1_battery_state,
+                                 'NATherm1_rf_strength': NATherm1_rf_strength,
+                                 'NACamera_wifi_strength': NACamera_wifi_strength,
+                                 'NACamera_sd_status': NACamera_sd_status,
+                                 'NACamera_alim_status': NACamera_alim_status,
+                                 'HomeID': home_id}, sort_keys=True, indent=4)
+        elif argv[1] == "stationdata":
+            status = json.dumps({'Indoor_wifi_status': Indoor_wifi_status,
+                                 'Indoor_temperature': Indoor_temperature,
+                                 'Indoor_pressure': Indoor_pressure,
+                                 'Indoor_humidity': Indoor_humidity,
+                                 'Indoor_co2': Indoor_co2,
+                                 'Indoor_noise': Indoor_noise,
+                                 'Outdoor_temperature': Outdoor_temperature,
+                                 'Outdoor_humidity': Outdoor_humidity,
+                                 'Outdoor_battery_percent': Outdoor_battery_percent,
+                                 'Outdoor_rf_status': Outdoor_rf_status}, sort_keys=True, indent=4)
+        else:
+            status = json.dumps({'person_away': person_away}, sort_keys=True, indent=4)
     return status
 
 status = main()
