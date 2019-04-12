@@ -29,7 +29,7 @@ returns json containing:
 
 <stationdata>
 returns json containing:
-{'Indoor_wifi_status','Indoor_temperature','Indoor_pressure','Indoor_humidity','Indoor_co2','Indoor_noise','Outdoor_temperature','Outdoor_humidity','Outdoor_battery_percent','Outdoor_rf_status}
+{'Indoor_wifi_status','Indoor_temperature','Indoor_pressure','Indoor_humidity','Indoor_co2','Indoor_noise','Outdoor_temperature','Outdoor_humidity','Outdoor_battery_percent','Outdoor_rf_status','device_last_seen'}
 ```
 
 For your own application ID and camera the application does not need to have write_camera as available scope
