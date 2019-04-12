@@ -25,11 +25,13 @@ returns json "person_away":
  
 <sysstat>
 returns json containing:
-{'NAPlug_rf_strength','NAPlug_wifi_strength','NATherm1_battery_state','NATherm1_rf_strength','NACamera_wifi_strength','NACamera_sd_status','NACamera_alim_status','HomeID'}
+{'NAPlug_rf_strength','NAPlug_wifi_strength','NATherm1_battery_state','NATherm1_rf_strength','NACamera_wifi_strength',
+ 'NACamera_sd_status','NACamera_alim_status','HomeID'}
 
 <stationdata>
 returns json containing:
-{'Indoor_wifi_status','Indoor_temperature','Indoor_pressure','Indoor_humidity','Indoor_co2','Indoor_noise','Outdoor_temperature','Outdoor_humidity','Outdoor_battery_percent','Outdoor_rf_status','device_last_seen'}
+{'Indoor_wifi_status','Indoor_temperature','Indoor_pressure','Indoor_humidity','Indoor_co2','Indoor_noise',
+ 'Outdoor_temperature','Outdoor_humidity','Outdoor_battery_percent','Outdoor_rf_status','device_last_seen'}
 ```
 
 For your own application ID and camera the application does not need to have write_camera as available scope
